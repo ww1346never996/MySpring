@@ -9,10 +9,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class UrlResource implements Resource{
+
     private final URL url;
 
     public UrlResource(URL url) {
-        Assert.notNull(url, "URL must not be null");
+        Assert.notNull(url,"URL must not be null");
         this.url = url;
     }
 
@@ -29,4 +30,5 @@ public class UrlResource implements Resource{
             throw ex;
         }
     }
+
 }

@@ -18,33 +18,38 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
-    public XmlBeanDefinitionReader(BeanDefinitionRegistry beanDefinitionRegistry) {
-        super(beanDefinitionRegistry);
+
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        super(registry);
     }
 
-    public XmlBeanDefinitionReader(ResourceLoader loader, BeanDefinitionRegistry registry) {
-        super(registry, loader);
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
+        super(registry, resourceLoader);
     }
 
     @Override
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try {
-            try (InputStream is = resource.getInputStream()) {
-                doLoadBeanDefinitions(is);
+            try (InputStream inputStream = resource.getInputStream()) {
+                doLoadBeanDefinitions(inputStream);
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new BeansException("IOException parsing XML document from " + resource, e);
         }
     }
 
     @Override
     public void loadBeanDefinitions(Resource... resources) throws BeansException {
-
+        for (Resource resource : resources) {
+            loadBeanDefinitions(resource);
+        }
     }
 
     @Override
     public void loadBeanDefinitions(String location) throws BeansException {
-
+        ResourceLoader resourceLoader = getResourceLoader();
+        Resource resource = resourceLoader.getResource(location);
+        loadBeanDefinitions(resource);
     }
 
     protected void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException {
@@ -95,4 +100,5 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             getRegistry().registerBeanDefinition(beanName, beanDefinition);
         }
     }
+
 }
