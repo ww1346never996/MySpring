@@ -4,12 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import mySpringFramework.beans.BeansException;
 import mySpringFramework.beans.PropertyValue;
 import mySpringFramework.beans.PropertyValues;
+import mySpringFramework.beans.factory.config.AutowireCapableBeanFactory;
 import mySpringFramework.beans.factory.config.BeanDefinition;
+import mySpringFramework.beans.factory.config.BeanPostProcessor;
 import mySpringFramework.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
@@ -18,8 +20,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         try {
             bean = createBeanInstance(beanDefinition, beanName, args);
-            // 给 Bean 填充属性
+            //给Bean填充属性
             applyPropertyValues(beanName, bean, beanDefinition);
+            //执行前置后置操作处理
+            bean = initializeBean(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
@@ -73,5 +77,41 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         this.instantiationStrategy = instantiationStrategy;
     }
 
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        //执行before的处理
+        Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+        //初始化调用
+        invokeInitMethods(beanName, wrappedBean, beanDefinition);
+        //执行after处理
+        wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+
+        return wrappedBean;
+    }
+
+    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
+        Object res = existingBean;
+        for (BeanPostProcessor postProcessor : getBeanPostProcessors()) {
+            Object current = postProcessor.postProcessBeforeInitialization(res, beanName);
+            if (null == current) return res;
+            res = current;
+        }
+        return res;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
+        Object res = existingBean;
+        for (BeanPostProcessor postProcessor : getBeanPostProcessors()) {
+            Object current = postProcessor.postProcessAfterInitialization(res, beanName);
+            if (null == current) return res;
+            res = current;
+        }
+        return res;
+    }
 }
 
