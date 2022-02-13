@@ -4,6 +4,7 @@ import mySpringFramework.beans.BeansException;
 import mySpringFramework.beans.factory.ConfigurableListableBeanFactory;
 import mySpringFramework.beans.factory.config.BeanFactoryPostProcessor;
 import mySpringFramework.beans.factory.config.BeanPostProcessor;
+import mySpringFramework.beans.factory.support.ApplicationContextAwareProcessor;
 import mySpringFramework.context.ConfigurableApplicationContext;
 import mySpringFramework.core.io.DefaultResourceLoader;
 
@@ -17,6 +18,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         refreshBeanFactory();
         //获取beanFactory
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+        //添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的Bean对象都能感知所属的ApplicationContext
+        beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
         //实例化前执行BeanFactoryPostProcessor
         invokeBeanFactoryPostProcessors(beanFactory);
         //BeanPostProcessor需要提前于其他Bean对象实例化之前执行注册操作

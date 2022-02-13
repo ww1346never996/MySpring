@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import mySpringFramework.beans.BeansException;
 import mySpringFramework.beans.PropertyValue;
 import mySpringFramework.beans.PropertyValues;
-import mySpringFramework.beans.factory.DisposableBean;
-import mySpringFramework.beans.factory.InitializingBean;
+import mySpringFramework.beans.factory.*;
 import mySpringFramework.beans.factory.config.AutowireCapableBeanFactory;
 import mySpringFramework.beans.factory.config.BeanDefinition;
 import mySpringFramework.beans.factory.config.BeanPostProcessor;
@@ -67,7 +66,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 Object value = propertyValue.getValue();
 
                 if (value instanceof BeanReference) {
-                    //A 依赖 B，获取 B 的实例化
+                    //A依赖B，获取B的实例化
                     BeanReference beanReference = (BeanReference) value;
                     value = getBean(beanReference.getBeanName());
                 }
@@ -88,6 +87,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        //invokeAwareMethod
+        if (bean instanceof Aware){
+            if (bean instanceof BeanFactoryAware){
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanNameAware){
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+            if (bean instanceof BeanClassLoaderAware){
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+        }
         //执行before的处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         //初始化调用

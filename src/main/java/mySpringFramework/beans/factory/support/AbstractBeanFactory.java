@@ -5,6 +5,7 @@ import mySpringFramework.beans.factory.BeanFactory;
 import mySpringFramework.beans.factory.config.BeanDefinition;
 import mySpringFramework.beans.factory.config.BeanPostProcessor;
 import mySpringFramework.beans.factory.config.ConfigurableBeanFactory;
+import mySpringFramework.utils.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
  * 注册表接口
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
@@ -53,6 +56,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
     }
 }
 
