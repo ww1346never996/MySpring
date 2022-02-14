@@ -1,4 +1,4 @@
-package mySpringFramework.beans.factory.support;
+package mySpringFramework.context.support;
 
 import mySpringFramework.beans.BeansException;
 import mySpringFramework.beans.factory.ApplicationContextAware;
@@ -6,6 +6,7 @@ import mySpringFramework.beans.factory.config.BeanPostProcessor;
 import mySpringFramework.context.ApplicationContext;
 
 public class ApplicationContextAwareProcessor implements BeanPostProcessor {
+
     private final ApplicationContext applicationContext;
 
     public ApplicationContextAwareProcessor(ApplicationContext applicationContext) {
@@ -24,4 +25,5 @@ public class ApplicationContextAwareProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
+
 }

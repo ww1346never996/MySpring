@@ -5,10 +5,11 @@ import mySpringFramework.beans.factory.ConfigurableListableBeanFactory;
 import mySpringFramework.beans.factory.support.DefaultListableBeanFactory;
 
 public abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
+
     private DefaultListableBeanFactory beanFactory;
 
     @Override
-    protected void refreshBeanFactory() throws BeansException{
+    protected void refreshBeanFactory() throws BeansException {
         DefaultListableBeanFactory beanFactory = createBeanFactory();
         loadBeanDefinitions(beanFactory);
         this.beanFactory = beanFactory;
@@ -24,4 +25,6 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
     protected ConfigurableListableBeanFactory getBeanFactory() {
         return beanFactory;
     }
+
 }
+

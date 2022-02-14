@@ -1,7 +1,9 @@
 package mySpringFramework.beans;
 
 public class PropertyValue {
+
     private final String name;
+
     private final Object value;
 
     public PropertyValue(String name, Object value) {
@@ -16,4 +18,6 @@ public class PropertyValue {
     public Object getValue() {
         return value;
     }
+
 }
+

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyValues {
+
     private final List<PropertyValue> propertyValueList = new ArrayList<>();
 
-    public void addPropertyValue(PropertyValue propertyValue) {
-        this.propertyValueList.add(propertyValue);
+    public void addPropertyValue(PropertyValue pv) {
+        this.propertyValueList.add(pv);
     }
 
     public PropertyValue[] getPropertyValues() {
@@ -22,4 +23,5 @@ public class PropertyValues {
         }
         return null;
     }
+
 }

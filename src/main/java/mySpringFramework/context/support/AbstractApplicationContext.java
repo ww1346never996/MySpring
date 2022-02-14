@@ -4,7 +4,6 @@ import mySpringFramework.beans.BeansException;
 import mySpringFramework.beans.factory.ConfigurableListableBeanFactory;
 import mySpringFramework.beans.factory.config.BeanFactoryPostProcessor;
 import mySpringFramework.beans.factory.config.BeanPostProcessor;
-import mySpringFramework.beans.factory.support.ApplicationContextAwareProcessor;
 import mySpringFramework.context.ConfigurableApplicationContext;
 import mySpringFramework.core.io.DefaultResourceLoader;
 
@@ -28,12 +27,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         beanFactory.preInstantiateSingletons();
     }
 
+
     protected abstract void refreshBeanFactory() throws BeansException;
 
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-        //获取全部的BeanFactoryPostProcessor并执行
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
         for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessorMap.values()) {
             beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
@@ -41,7 +40,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     }
 
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-        //获取全部的BeanPostProcessor并添加进工厂
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
         for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
             beanFactory.addBeanPostProcessor(beanPostProcessor);
@@ -82,4 +80,5 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     public void close() {
         getBeanFactory().destroySingletons();
     }
+
 }
