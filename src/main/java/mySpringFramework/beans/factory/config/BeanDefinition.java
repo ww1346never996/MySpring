@@ -3,10 +3,15 @@ package mySpringFramework.beans.factory.config;
 import mySpringFramework.beans.PropertyValues;
 
 public class BeanDefinition {
+    String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
+    String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
     private Class beanClass;
     private PropertyValues propertyValues;
     private String initMethodName;
     private String destroyMethodName;
+    private String scope = SCOPE_SINGLETON;
+    private boolean singleton = true;
+    private boolean prototype = false;
 
     //无属性传递的定义构造函数
     public BeanDefinition(Class bean) {
@@ -18,6 +23,21 @@ public class BeanDefinition {
     public BeanDefinition(Class bean, PropertyValues propertyValues) {
         this.beanClass = bean;
         this.propertyValues = propertyValues != null ? propertyValues : new PropertyValues();
+    }
+
+    //设定单例还是原型
+    public void setScope(String scope){
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public boolean isSingleton() {
+        return singleton;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
     }
 
     public Class getBeanClass() {
