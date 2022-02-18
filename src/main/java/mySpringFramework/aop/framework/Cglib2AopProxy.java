@@ -25,6 +25,7 @@ public class Cglib2AopProxy implements AopProxy {
     }
 
     private static class DynamicAdvisedInterceptor implements MethodInterceptor {
+
         private final AdvisedSupport advised;
 
         public DynamicAdvisedInterceptor(AdvisedSupport advised) {
@@ -56,4 +57,5 @@ public class Cglib2AopProxy implements AopProxy {
         }
 
     }
+
 }

@@ -1,6 +1,7 @@
-package mySpringFramework.beans.factory;
+package mySpringFramework.context;
 
 import mySpringFramework.beans.BeansException;
+import mySpringFramework.beans.factory.Aware;
 import mySpringFramework.context.ApplicationContext;
 
 public interface ApplicationContextAware extends Aware {

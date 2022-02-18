@@ -1,7 +1,7 @@
 package mySpringFramework.context.support;
 
 import mySpringFramework.beans.BeansException;
-import mySpringFramework.beans.factory.ApplicationContextAware;
+import mySpringFramework.context.ApplicationContextAware;
 import mySpringFramework.beans.factory.config.BeanPostProcessor;
 import mySpringFramework.context.ApplicationContext;
 
